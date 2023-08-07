@@ -25,8 +25,9 @@ func Plugin(ctx context.Context) *plugin.Plugin {
 		TableMap: map[string]*plugin.Table{
 			"kafka_topic":          tableKafkaTopic(ctx),
 			"kafka_consumer_group": tableKafkaConsumerGroup(ctx),
-			// "dockerhub_token":      tableDockerHubToken(ctx),
-			// "dockerhub_user":       tableDockerHubUser(ctx),
+			"kafka_broker":         tableKafkaBroker(ctx),
+			"kafka_config":         tableKafkaConfig(ctx),
+			"kafka_acl":            tableKafkaAcl(ctx),
 		},
 	}
 
