@@ -16,6 +16,12 @@ func tableKafkaTopic(_ context.Context) *plugin.Table {
 		Description: "Get details of all the topics in your Kafka cluster.",
 		List: &plugin.ListConfig{
 			Hydrate: listTopics,
+			KeyColumns: []*plugin.KeyColumn{
+				{
+					Name:    "name",
+					Require: plugin.Optional,
+				},
+			},
 		},
 		Columns: []*plugin.Column{
 			{
@@ -68,13 +74,20 @@ func listTopics(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData)
 	}
 
 	// fetch topic names
-	topics, err := kafkaClient.Client.Topics()
-	if err != nil {
-		logger.Error("kafka_topic.Topics", "api_error", err)
-		return nil, err
+	topicName := d.EqualsQualString("name")
+	allTopics := []string{}
+	if topicName == "" {
+		topics, err := kafkaClient.Client.Topics()
+		if err != nil {
+			logger.Error("kafka_topic.Topics", "api_error", err)
+			return nil, err
+		}
+		allTopics = append(allTopics, topics...)
+	} else {
+		allTopics = append(allTopics, topicName)
 	}
 
-	topicsMetadata, err := kafkaClient.Admin.DescribeTopics(topics)
+	topicsMetadata, err := kafkaClient.Admin.DescribeTopics(allTopics)
 	if err != nil {
 		logger.Error("kafka_topic.DescribeTopics", "api_error", err)
 		return nil, err

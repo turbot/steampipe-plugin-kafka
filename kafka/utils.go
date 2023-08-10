@@ -25,11 +25,7 @@ func getClient(ctx context.Context, d *plugin.QueryData) (*kafkaClient, error) {
 var GetNewClientCached = plugin.HydrateFunc(GetNewClientUncached).Memoize()
 
 func GetNewClientUncached(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (any, error) {
-	// Default to using env vars (#2)
-	//username := os.Getenv("DOCKER_HUB_USERNAME")
-
 	var bootstrapServers []string
-	// But prefer the config (#1)
 	kafkaConfig := GetConfig(d.Connection)
 	if kafkaConfig.BootstrapServers != nil {
 		bootstrapServers = *kafkaConfig.BootstrapServers

@@ -16,6 +16,12 @@ func tableKafkaConsumerGroup(_ context.Context) *plugin.Table {
 		Description: "Get details of all the consumer groups in your Kafka cluster.",
 		List: &plugin.ListConfig{
 			Hydrate: listConsumerGroups,
+			KeyColumns: []*plugin.KeyColumn{
+				{
+					Name:    "group_id",
+					Require: plugin.Optional,
+				},
+			},
 		},
 		Columns: []*plugin.Column{
 			{
@@ -87,19 +93,23 @@ func listConsumerGroups(ctx context.Context, d *plugin.QueryData, h *plugin.Hydr
 		return nil, err
 	}
 
-	// fetch group names
-	groups, err := kafkaClient.Admin.ListConsumerGroups()
-	if err != nil {
-		logger.Error("kafka_topic.listConsumerGroups", "api_error", err)
-		return nil, err
+	// fetch group ids
+	gid := d.EqualsQualString("group_id")
+	var groupIds []string
+	if gid == "" {
+		groups, err := kafkaClient.Admin.ListConsumerGroups()
+		if err != nil {
+			logger.Error("kafka_topic.listConsumerGroups", "api_error", err)
+			return nil, err
+		}
+		for group := range groups {
+			groupIds = append(groupIds, group)
+		}
+	} else {
+		groupIds = append(groupIds, gid)
 	}
 
-	var groupNames []string
-	for _, group := range groups {
-		groupNames = append(groupNames, group)
-	}
-
-	groupDescriptions, err := kafkaClient.Admin.DescribeConsumerGroups(groupNames)
+	groupDescriptions, err := kafkaClient.Admin.DescribeConsumerGroups(groupIds)
 	if err != nil {
 		logger.Error("kafka_topic.DescribeConsumerGroups", "api_error", err)
 		return nil, err

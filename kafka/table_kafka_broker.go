@@ -20,7 +20,7 @@ func tableKafkaBroker(_ context.Context) *plugin.Table {
 		Columns: []*plugin.Column{
 			{
 				Name:        "id",
-				Type:        proto.ColumnType_INT,
+				Type:        proto.ColumnType_STRING,
 				Description: "ID returns the broker ID retrieved from Kafka's metadata, or -1 if that is not known.",
 			},
 			{

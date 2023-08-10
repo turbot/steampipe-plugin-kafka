@@ -1,97 +1,81 @@
 ---
 organization: Turbot
 category: ["software development"]
-icon_url: "/images/plugins/turbot/dockerhub.svg"
-brand_color: "#096BD4"
-display_name: "Docker Hub"
-short_name: "dockerhub"
-description: "Steampipe plugin for querying Docker Hub Repositories, Tags and other resources."
-og_description: Query Docker Hub with SQL! Open source CLI. No DB required.
-og_image: "/images/plugins/turbot/dockerhub-social-graphic.png"
+icon_url: "/images/plugins/turbot/kafka.svg"
+brand_color: ""
+display_name: "Kafka"
+short_name: "kafka"
+description: "Steampipe plugin for querying Kafka Topics, Brokers and other resources."
+og_description: Query Kafka with SQL! Open source CLI. No DB required.
+og_image: "/images/plugins/turbot/kafka-social-graphic.png"
 ---
 
-# Docker Hub + Steampipe
+# Kafka + Steampipe
 
-[Docker Hub](https://hub.docker.com/) is a cloud-based repository and distribution service provided by Docker that allows developers to store and share container images.
+[Kafka](https://kafka.apache.org/) is an open-source distributed event streaming platform used by thousands of companies for high-performance data pipelines, streaming analytics, data integration, and mission-critical applications.
 
 [Steampipe](https://steampipe.io/) is an open source CLI for querying cloud APIs using SQL from [Turbot](https://turbot.com/)
 
-List your Docker Hub Repositories:
+List your Kafka Topics:
 
 ```sql
 select
   name,
-  pull_count,
-  star_count,
-  is_private,
-  last_updated
+  version,
+  is_internal,
+  jsonb_array_length(partitions) as number_of_partitions
 from
-  dockerhub_repository;
+  kafka_topic;
 ```
 
 ```
-+------------------------+------------+------------+------------+---------------------------+
-| name                   | pull_count | star_count | is_private | last_updated              |
-+------------------------+------------+------------+------------+---------------------------+
-| souravthe/test         | <null>     | <null>     | false      | 2023-07-17T18:26:25+05:30 |
-| souravthe/test-private | <null>     | <null>     | true       | 2023-07-17T18:32:56+05:30 |
-+------------------------+------------+------------+------------+---------------------------+
++--------------------+---------+-------------+----------------------+
+| name               | version | is_internal | number_of_partitions |
++--------------------+---------+-------------+----------------------+
+| mytopic            | 5       | false       | 1                    |
+| __consumer_offsets | 5       | true        | 50                   |
++--------------------+---------+-------------+----------------------+
 ```
 
 ## Documentation
 
-- [Table definitions / examples →](https://hub.steampipe.io/plugins/turbot/dockerhub/tables)
+- [Table definitions / examples →](https://hub.steampipe.io/plugins/turbot/kafka/tables)
 
 ## Quick start
 
 ### Install
 
-Download and install the latest Docker Hub plugin:
+Download and install the latest Kafka plugin:
 
 ```sh
-steampipe plugin install dockerhub
+steampipe plugin install kafka
 ```
 
 ### Credentials
 
 | Item | Description                                                                                                                                                                                              |
 | ---- |----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Credentials | You will require the Docker `username`` and `password``.                                                                                               |
+| Credentials | Kafka plugin requires `bootstrap_servers`.                                                                                               |
 | Permissions | NA                                                              |
-| Radius | Each connection represents one Docker Hub user. |                                                                    |
-| Resolution  | 1. Credentials explicitly set in a steampipe config file (`~/.steampipe/config/dockerhub.spc`).<br />2. Credentials specified in environment variables, e.g., `DOCKER_HUB_USERNAME` and `DOCKER_HUB_PASSWORD`. |
+| Radius      | Each connection represents one Kafka cluster. |                                                                    |
+| Resolution  | 1. Credentials explicitly set in a steampipe config file (`~/.steampipe/config/kafka.spc`). |
 
 ### Configuration
 
-Installing the latest Docker Hub plugin will create a config file (`~/.steampipe/config/dockerhub.spc`) with a single connection named `dockerhub`:
+Installing the latest Kafka plugin will create a config file (`~/.steampipe/config/kafka.spc`) with a single connection named `kafka`:
 
-Configure your account details in `~/.steampipe/config/dockerhub.spc`:
+Configure your account details in `~/.steampipe/config/kafka.spc`:
 
 ```hcl
-connection "dockerhub" {
-  plugin = "dockerhub"
+connection "kafka" {
+  plugin = "kafka"
 
-  # DockerHub Username. Required.
-  # This can also be set via the 'DOCKER_HUB_USERNAME' environment variable.
-  # username = "turbot"
-
-  # DockerHub Password. Required.
-  # This can also be set via the 'DOCKER_HUB_PASSWORD' environment variable.
-  # password = "turbot@123"
-
-  # DockerHub 2FA Code. Required when 2FA is enabled.
-  # two_factor_code = "123456"
+  # bootstrap_servers - (Required) A list of host:port addresses that will be used to discover the full set of alive brokers.
+  # bootstrap_servers = [ "localhost:9092" ]
 }
-```
-
-Alternatively, you can also use the standard Docker Hub environment variables to configure your credentials **only if other arguments (`username`, `password`) are not specified** in the connection:
-
-```sh
-export DOCKER_HUB_USERNAME=turbot
-export DOCKER_HUB_PASSWORD=turbot@123
 ```
 
 ## Get involved
 
-- Open source: https://github.com/turbot/steampipe-plugin-dockerhub
+- Open source: https://github.com/turbot/steampipe-plugin-kafka
 - Community: [Slack Channel](https://steampipe.io/community/join)
