@@ -58,7 +58,7 @@ steampipe plugin install kafka
 | Credentials | Kafka plugin requires `bootstrap_servers`.                                                                                               |
 | Permissions | NA                                                              |
 | Radius      | Each connection represents one Kafka cluster. |                                                                    |
-| Resolution  | 1. Credentials explicitly set in a steampipe config file (`~/.steampipe/config/kafka.spc`). |
+| Resolution  | Credentials explicitly set in a steampipe config file (`~/.steampipe/config/kafka.spc`). |
 
 ### Configuration
 

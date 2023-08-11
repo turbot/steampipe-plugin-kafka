@@ -15,19 +15,15 @@ func Plugin(ctx context.Context) *plugin.Plugin {
 		Name:               pluginName,
 		DefaultTransform:   transform.FromCamel().Transform(transform.NullIfZeroValue),
 		DefaultRetryConfig: &plugin.RetryConfig{ShouldRetryErrorFunc: shouldRetryError([]string{"429"})},
-		DefaultGetConfig: &plugin.GetConfig{
-			ShouldIgnoreError: isNotFoundError([]string{"resource not found"}),
-		},
 		ConnectionConfigSchema: &plugin.ConnectionConfigSchema{
 			NewInstance: ConfigInstance,
 			Schema:      ConfigSchema,
 		},
 		TableMap: map[string]*plugin.Table{
-			"kafka_topic":          tableKafkaTopic(ctx),
-			"kafka_consumer_group": tableKafkaConsumerGroup(ctx),
 			"kafka_broker":         tableKafkaBroker(ctx),
 			"kafka_config":         tableKafkaConfig(ctx),
-			"kafka_acl":            tableKafkaAcl(ctx),
+			"kafka_consumer_group": tableKafkaConsumerGroup(ctx),
+			"kafka_topic":          tableKafkaTopic(ctx),
 		},
 	}
 

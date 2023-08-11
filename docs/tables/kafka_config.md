@@ -5,10 +5,10 @@ The configuration for the specified resources. The returned configuration includ
 You **_must_** specify `resource_name` and `resource_type` in a `where` clause in order to use this table.
 
 Below are the supported resource types -
-- UnknownResource -> 0
-- TopicResource -> 2
-- BrokerResource -> 4
-- BrokerLoggerResource -> 8
+- UnknownResource - 0
+- TopicResource - 2
+- BrokerResource - 4
+- BrokerLoggerResource - 8
 
 ## Examples
 
