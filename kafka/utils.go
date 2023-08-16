@@ -9,8 +9,10 @@ import (
 )
 
 type kafkaClient struct {
-	Admin  sarama.ClusterAdmin
-	Client sarama.Client
+	Admin            sarama.ClusterAdmin
+	Client           sarama.Client
+	BootstrapServers []string
+	Config           *sarama.Config
 }
 
 func getClient(ctx context.Context, d *plugin.QueryData) (*kafkaClient, error) {
@@ -41,14 +43,17 @@ func GetNewClientUncached(ctx context.Context, d *plugin.QueryData, _ *plugin.Hy
 	if err != nil {
 		return nil, err
 	}
+
 	admin, err := sarama.NewClusterAdmin(bootstrapServers, config)
 	if err != nil {
 		return nil, err
 	}
 
 	kafkaClient := &kafkaClient{
-		Admin:  admin,
-		Client: client,
+		Admin:            admin,
+		Client:           client,
+		BootstrapServers: bootstrapServers,
+		Config:           config,
 	}
 
 	return kafkaClient, nil

@@ -24,6 +24,7 @@ func Plugin(ctx context.Context) *plugin.Plugin {
 			"kafka_config":         tableKafkaConfig(ctx),
 			"kafka_consumer_group": tableKafkaConsumerGroup(ctx),
 			"kafka_topic":          tableKafkaTopic(ctx),
+			"kafka_topic_message":  tableKafkaTopicMessage(ctx),
 		},
 	}
 
