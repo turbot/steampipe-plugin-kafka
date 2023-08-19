@@ -2,7 +2,7 @@
 organization: Turbot
 category: ["software development"]
 icon_url: "/images/plugins/turbot/kafka.svg"
-brand_color: ""
+brand_color: "#5CA2A2"
 display_name: "Kafka"
 short_name: "kafka"
 description: "Steampipe plugin for querying Kafka Topics, Brokers and other resources."
@@ -53,11 +53,11 @@ steampipe plugin install kafka
 
 ### Credentials
 
-| Item | Description                                                                                                                                                                                              |
-| ---- |----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Credentials | Kafka plugin requires `bootstrap_servers`.                                                                                               |
-| Permissions | NA                                                              |
-| Radius      | Each connection represents one Kafka cluster. |                                                                    |
+| Item        | Description                                                                              |
+| ----------- | ---------------------------------------------------------------------------------------- | --- |
+| Credentials | Kafka plugin requires `bootstrap_servers`.                                               |
+| Permissions | NA                                                                                       |
+| Radius      | Each connection represents one Kafka cluster.                                            |     |
 | Resolution  | Credentials explicitly set in a steampipe config file (`~/.steampipe/config/kafka.spc`). |
 
 ### Configuration
