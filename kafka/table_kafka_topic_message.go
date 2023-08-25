@@ -24,6 +24,10 @@ func tableKafkaTopicMessage(_ context.Context) *plugin.Table {
 					Name:    "topic",
 					Require: plugin.Optional,
 				},
+				{
+					Name:    "offset",
+					Require: plugin.Optional,
+				},
 			},
 		},
 		Columns: []*plugin.Column{
@@ -89,12 +93,13 @@ func listTopicMessages(ctx context.Context, d *plugin.QueryData, h *plugin.Hydra
 		return nil, err
 	}
 
+	offSet := d.EqualsQuals["offset"].GetInt64Value()
 	queryTime := time.Now()
 	var wg sync.WaitGroup
 	errorCh := make(chan error, len(topic.Partitions))
 	for _, partition := range topic.Partitions {
 		wg.Add(1)
-		go getMsgDataAsync(ctx, partition, kafkaClient, &wg, topic.Name, errorCh, queryTime, d)
+		go getMsgDataAsync(ctx, partition, kafkaClient, &wg, topic.Name, errorCh, queryTime, d, offSet)
 
 	}
 	wg.Wait()
@@ -109,23 +114,31 @@ func listTopicMessages(ctx context.Context, d *plugin.QueryData, h *plugin.Hydra
 	return nil, nil
 }
 
-func getMsgDataAsync(ctx context.Context, partition *sarama.PartitionMetadata, kafkaClient *kafkaClient, wg *sync.WaitGroup, topic string, errorCh chan error, queryTime time.Time, d *plugin.QueryData) {
+func getMsgDataAsync(ctx context.Context, partition *sarama.PartitionMetadata, kafkaClient *kafkaClient, wg *sync.WaitGroup, topic string, errorCh chan error, queryTime time.Time, d *plugin.QueryData, offSet int64) {
 	defer wg.Done()
 
-	err := getMsgData(ctx, partition, kafkaClient, topic, queryTime, d)
+	err := getMsgData(ctx, partition, kafkaClient, topic, queryTime, d, offSet)
 	if err != nil {
 		errorCh <- err
 	}
 }
 
-func getMsgData(ctx context.Context, partition *sarama.PartitionMetadata, kafkaClient *kafkaClient, topic string, queryTime time.Time, d *plugin.QueryData) error {
+func getMsgData(ctx context.Context, partition *sarama.PartitionMetadata, kafkaClient *kafkaClient, topic string, queryTime time.Time, d *plugin.QueryData, offSet int64) error {
 	newConsumer, err := sarama.NewConsumer(kafkaClient.BootstrapServers, kafkaClient.Config)
 	if err != nil {
 		plugin.Logger(ctx).Error("kafka_topic_message.NewConsumer", "api_error", err)
 		return err
 	}
 
-	consumer, err := newConsumer.ConsumePartition(topic, partition.ID, sarama.OffsetOldest)
+	// check if offset is provided by the user
+	var startingOffset int64
+	if offSet == 0 {
+		startingOffset = sarama.OffsetOldest
+	} else {
+		startingOffset = offSet
+	}
+
+	consumer, err := newConsumer.ConsumePartition(topic, partition.ID, startingOffset)
 	if err != nil {
 		plugin.Logger(ctx).Error("kafka_topic_message.ConsumePartition", "api_error", err)
 		return err
