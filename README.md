@@ -6,7 +6,7 @@ Use SQL to instantly query Kafka Topics, Brokers and more. Open source CLI. No D
 
 - **[Get started ->](https://hub.steampipe.io/plugins/turbot/kafka)**
 - Documentation: [Table definitions & examples](https://hub.steampipe.io/plugins/turbot/kafka/tables)
-- Community: [Slack Channel](https://steampipe.io/community/join)
+- Community: [Join #steampipe on Slack →](https://turbot.com/community/join)
 - Get involved: [Issues](https://github.com/turbot/steampipe-plugin-kafka/issues)
 
 ## Quick start
