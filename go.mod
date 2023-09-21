@@ -2,7 +2,10 @@ module github.com/turbot/steampipe-plugin-kafka
 
 go 1.19
 
-require github.com/IBM/sarama v1.40.1
+require (
+	github.com/IBM/sarama v1.40.1
+	github.com/turbot/steampipe-plugin-sdk/v5 v5.5.1
+)
 
 require (
 	cloud.google.com/go v0.110.0 // indirect
@@ -22,7 +25,6 @@ require (
 	github.com/btubbs/datetime v0.1.1 // indirect
 	github.com/cenkalti/backoff/v4 v4.2.1 // indirect
 	github.com/cespare/xxhash/v2 v2.2.0 // indirect
-	github.com/confluentinc/confluent-kafka-go/v2 v2.2.0 // indirect
 	github.com/danwakefield/fnmatch v0.0.0-20160403171240-cbb64ac3d964 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/dgraph-io/ristretto v0.1.1 // indirect
@@ -65,6 +67,7 @@ require (
 	github.com/jcmturner/gofork v1.7.6 // indirect
 	github.com/jcmturner/gokrb5/v8 v8.4.3 // indirect
 	github.com/jcmturner/rpc/v2 v2.0.3 // indirect
+	github.com/jhump/protoreflect v1.14.1 // indirect
 	github.com/jmespath/go-jmespath v0.4.0 // indirect
 	github.com/klauspost/compress v1.16.7 // indirect
 	github.com/mattn/go-colorable v0.1.12 // indirect
@@ -86,16 +89,13 @@ require (
 	github.com/prometheus/procfs v0.8.0 // indirect
 	github.com/rcrowley/go-metrics v0.0.0-20201227073835-cf1acfcdf475 // indirect
 	github.com/rivo/uniseg v0.2.0 // indirect
+	github.com/rogpeppe/go-internal v1.9.0 // indirect
 	github.com/sethvargo/go-retry v0.2.4 // indirect
 	github.com/sirupsen/logrus v1.9.0 // indirect
 	github.com/spf13/cast v1.5.0 // indirect
 	github.com/stevenle/topsort v0.2.0 // indirect
 	github.com/tkrajina/go-reflector v0.5.6 // indirect
 	github.com/turbot/go-kit v0.6.0 // indirect
-	github.com/turbot/steampipe-plugin-sdk/v5 v5.5.1 // indirect
-	github.com/twmb/franz-go v1.14.3 // indirect
-	github.com/twmb/franz-go/pkg/kadm v1.9.0 // indirect
-	github.com/twmb/franz-go/pkg/kmsg v1.6.1 // indirect
 	github.com/ulikunitz/xz v0.5.10 // indirect
 	github.com/zclconf/go-cty v1.12.1 // indirect
 	go.opencensus.io v0.24.0 // indirect

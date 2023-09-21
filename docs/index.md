@@ -14,7 +14,7 @@ og_image: "/images/plugins/turbot/kafka-social-graphic.png"
 
 [Kafka](https://kafka.apache.org/) is an open-source distributed event streaming platform used by thousands of companies for high-performance data pipelines, streaming analytics, data integration, and mission-critical applications.
 
-[Steampipe](https://steampipe.io/) is an open source CLI for querying cloud APIs using SQL from [Turbot](https://turbot.com/)
+[Steampipe](https://steampipe.io/) is an open source CLI for querying cloud APIs using SQL.
 
 List your Kafka Topics:
 
@@ -39,7 +39,7 @@ from
 
 ## Documentation
 
-- [Table definitions / examples →](https://hub.steampipe.io/plugins/turbot/kafka/tables)
+- **[Table definitions & examples →](/plugins/turbot/kafka/tables)**
 
 ## Quick start
 
@@ -55,7 +55,7 @@ steampipe plugin install kafka
 
 | Item        | Description                                                                              |
 | ----------- | ---------------------------------------------------------------------------------------- | --- |
-| Credentials | Kafka plugin requires `bootstrap_servers`.                                               |
+| Credentials | Kafka plugin requires `bootstrap_servers` for all requests.                              |
 | Permissions | NA                                                                                       |
 | Radius      | Each connection represents one Kafka cluster.                                            |     |
 | Resolution  | Credentials explicitly set in a steampipe config file (`~/.steampipe/config/kafka.spc`). |
@@ -70,12 +70,12 @@ Configure your account details in `~/.steampipe/config/kafka.spc`:
 connection "kafka" {
   plugin = "kafka"
 
-  # bootstrap_servers - (Required) A list of host:port addresses that will be used to discover the full set of alive brokers.
-  # bootstrap_servers = [ "localhost:9092" ]
+  # bootstrap_servers - A list of host:port addresses that will be used to discover the full set of alive brokers. Required.
+  # bootstrap_servers = ["localhost:9092"]
 }
 ```
 
 ## Get involved
 
 - Open source: https://github.com/turbot/steampipe-plugin-kafka
-- Community: [Slack Channel](https://steampipe.io/community/join)
+- Community: [Join #steampipe on Slack →](https://turbot.com/community/join)
